@@ -9,6 +9,7 @@ crate-type = ["cdylib", "staticlib"]
 [dependencies]
 anyhow = "1.0.104"
 flutter_rust_bridge = "=2.12.0"
+log = "0.4.33"
 qbsdiff = "1.4.4"
 reqwest = { version = "0.12", default-features = false, features = ["blocking","rustls-tls"] }
 urlencoding = "2.1.3"

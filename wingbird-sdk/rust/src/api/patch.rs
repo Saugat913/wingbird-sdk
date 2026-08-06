@@ -38,25 +38,25 @@ pub fn download_patch(
         encoded_architecture,
     );
 
-    println!("[Wingbird Rust] Requesting patch from URL: {}", url);
+    log::info!("[Wingbird Rust] Requesting patch from URL: {}", url);
 
     let client = Client::builder()
         .user_agent("wingbird-sdk/0.1.0")
         .build()?;
 
     let response = client.get(url).send()?;
-    println!("[Wingbird Rust] Patch server response status: {}", response.status());
+    log::info!("[Wingbird Rust] Patch server response status: {}", response.status());
 
     match response.status() {
         StatusCode::OK => {
             let bytes = response.bytes()?;
-            println!("[Wingbird Rust] Patch downloaded successfully, size: {} bytes. Saving to: {}", bytes.len(), download_path);
+            log::info!("[Wingbird Rust] Patch downloaded successfully, size: {} bytes. Saving to: {}", bytes.len(), download_path);
             fs::write(download_path, bytes)?;
             Ok(true)
         }
 
         StatusCode::NOT_FOUND => {
-            println!("[Wingbird Rust] No patch available (404 Not Found).");
+            log::info!("[Wingbird Rust] No patch available (404 Not Found).");
             Ok(false)
         }
 
@@ -93,7 +93,7 @@ pub fn apply_patch(
     initial_version_file_path: String,
     final_version_file_path: String,
 ) -> Result<()> {
-    println!("[Wingbird Rust] Applying patch. Patch: {}, Initial: {}, Final: {}", patch_file_path, initial_version_file_path, final_version_file_path);
+    log::info!("[Wingbird Rust] Applying patch. Patch: {}, Initial: {}, Final: {}", patch_file_path, initial_version_file_path, final_version_file_path);
 
     let source = fs::read(initial_version_file_path)?;
     let patch = fs::read(patch_file_path)?;
@@ -107,7 +107,7 @@ pub fn apply_patch(
     patcher.apply(&source, Cursor::new(&mut output))?;
 
     fs::write(&final_version_file_path, output)?;
-    println!("[Wingbird Rust] Patch applied and saved successfully to: {}", final_version_file_path);
+    log::info!("[Wingbird Rust] Patch applied and saved successfully to: {}", final_version_file_path);
 
     Ok(())
 }
