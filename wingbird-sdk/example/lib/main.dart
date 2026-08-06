@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:sdk/sdk.dart';
 
 Future<void> main() async {
-  await RustLib.init();
+  await Wingbird.init(
+    channel: Channel.prod,
+  );
   runApp(const MyApp());
 }
 
