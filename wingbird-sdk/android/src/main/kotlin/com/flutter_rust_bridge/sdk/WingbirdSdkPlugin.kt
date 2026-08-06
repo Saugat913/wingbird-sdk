@@ -1,4 +1,4 @@
-package com.flutter_rust_bridge.wingbird_sdk
+package com.flutter_rust_bridge.sdk
 
 import android.content.Context
 import io.flutter.embedding.engine.plugins.FlutterPlugin

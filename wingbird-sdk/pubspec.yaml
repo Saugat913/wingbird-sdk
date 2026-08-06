@@ -47,14 +47,16 @@ flutter:
     platforms:
       android:
         ffiPlugin: true
-      ios:
-        ffiPlugin: true
-      linux:
-        ffiPlugin: true
-      macos:
-        ffiPlugin: true
-      windows:
-        ffiPlugin: true
+        package: com.flutter_rust_bridge.sdk
+        pluginClass: WingbirdSdkPlugin
+      # ios:
+      #   ffiPlugin: true
+      # linux:
+      #   ffiPlugin: true
+      # macos:
+      #   ffiPlugin: true
+      # windows:
+      #   ffiPlugin: true
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
