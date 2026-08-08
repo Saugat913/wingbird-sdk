@@ -1,3 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.flutter_rust_bridge.sdk">
     <uses-permission android:name="android.permission.INTERNET" />
+    <application>
+        <provider
+            android:name=".WingbirdInitProvider"
+            android:authorities="${applicationId}.wingbirdinitprovider"
+            android:exported="false"
+            android:initOrder="100" />
+    </application>
 </manifest>
