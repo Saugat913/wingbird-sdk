@@ -69,7 +69,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.12.0';
 
   @override
-  int get rustContentHash => 408960027;
+  int get rustContentHash => 800598245;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -81,23 +81,28 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 }
 
 abstract class RustLibApi extends BaseApi {
-  Future<void> crateApiPatchApplyPatch({
-    required String patchFilePath,
-    required String initialVersionFilePath,
-    required String finalVersionFilePath,
+  Future<int> crateApiPatchWingbirdPatchManagerGetCurrentPatchNumber({
+    required WingbirdPatchManager that,
   });
 
-  Future<bool> crateApiPatchDownloadPatch({
-    required String serverUrl,
-    required String appId,
-    required String channel,
-    required String currentVersion,
-    required String architecture,
-    required String platform,
-    required String downloadPath,
+  Future<WingbirdPatchManager> crateApiPatchWingbirdPatchManagerNew({
+    required WingbirdPatchManagerConfig config,
+  });
+
+  Future<void> crateApiPatchWingbirdPatchManagerRun({
+    required WingbirdPatchManager that,
   });
 
   Future<void> crateApiInitApp();
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_WingbirdPatchManager;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_WingbirdPatchManager;
+
+  CrossPlatformFinalizerArg
+  get rust_arc_decrement_strong_count_WingbirdPatchManagerPtr;
 }
 
 class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
@@ -109,18 +114,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   });
 
   @override
-  Future<void> crateApiPatchApplyPatch({
-    required String patchFilePath,
-    required String initialVersionFilePath,
-    required String finalVersionFilePath,
+  Future<int> crateApiPatchWingbirdPatchManagerGetCurrentPatchNumber({
+    required WingbirdPatchManager that,
   }) {
     return handler.executeNormal(
       NormalTask(
         callFfi: (port_) {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_String(patchFilePath, serializer);
-          sse_encode_String(initialVersionFilePath, serializer);
-          sse_encode_String(finalVersionFilePath, serializer);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWingbirdPatchManager(
+            that,
+            serializer,
+          );
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
@@ -129,50 +133,36 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           );
         },
         codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: sse_decode_AnyhowException,
+          decodeSuccessData: sse_decode_u_32,
+          decodeErrorData: null,
         ),
-        constMeta: kCrateApiPatchApplyPatchConstMeta,
-        argValues: [
-          patchFilePath,
-          initialVersionFilePath,
-          finalVersionFilePath,
-        ],
+        constMeta:
+            kCrateApiPatchWingbirdPatchManagerGetCurrentPatchNumberConstMeta,
+        argValues: [that],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiPatchApplyPatchConstMeta => const TaskConstMeta(
-    debugName: "apply_patch",
-    argNames: [
-      "patchFilePath",
-      "initialVersionFilePath",
-      "finalVersionFilePath",
-    ],
-  );
+  TaskConstMeta
+  get kCrateApiPatchWingbirdPatchManagerGetCurrentPatchNumberConstMeta =>
+      const TaskConstMeta(
+        debugName: "WingbirdPatchManager_get_current_patch_number",
+        argNames: ["that"],
+      );
 
   @override
-  Future<bool> crateApiPatchDownloadPatch({
-    required String serverUrl,
-    required String appId,
-    required String channel,
-    required String currentVersion,
-    required String architecture,
-    required String platform,
-    required String downloadPath,
+  Future<WingbirdPatchManager> crateApiPatchWingbirdPatchManagerNew({
+    required WingbirdPatchManagerConfig config,
   }) {
     return handler.executeNormal(
       NormalTask(
         callFfi: (port_) {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_String(serverUrl, serializer);
-          sse_encode_String(appId, serializer);
-          sse_encode_String(channel, serializer);
-          sse_encode_String(currentVersion, serializer);
-          sse_encode_String(architecture, serializer);
-          sse_encode_String(platform, serializer);
-          sse_encode_String(downloadPath, serializer);
+          sse_encode_box_autoadd_wingbird_patch_manager_config(
+            config,
+            serializer,
+          );
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
@@ -181,36 +171,58 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           );
         },
         codec: SseCodec(
-          decodeSuccessData: sse_decode_bool,
-          decodeErrorData: sse_decode_AnyhowException,
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWingbirdPatchManager,
+          decodeErrorData: null,
         ),
-        constMeta: kCrateApiPatchDownloadPatchConstMeta,
-        argValues: [
-          serverUrl,
-          appId,
-          channel,
-          currentVersion,
-          architecture,
-          platform,
-          downloadPath,
-        ],
+        constMeta: kCrateApiPatchWingbirdPatchManagerNewConstMeta,
+        argValues: [config],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiPatchDownloadPatchConstMeta => const TaskConstMeta(
-    debugName: "download_patch",
-    argNames: [
-      "serverUrl",
-      "appId",
-      "channel",
-      "currentVersion",
-      "architecture",
-      "platform",
-      "downloadPath",
-    ],
-  );
+  TaskConstMeta get kCrateApiPatchWingbirdPatchManagerNewConstMeta =>
+      const TaskConstMeta(
+        debugName: "WingbirdPatchManager_new",
+        argNames: ["config"],
+      );
+
+  @override
+  Future<void> crateApiPatchWingbirdPatchManagerRun({
+    required WingbirdPatchManager that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWingbirdPatchManager(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 3,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+        constMeta: kCrateApiPatchWingbirdPatchManagerRunConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiPatchWingbirdPatchManagerRunConstMeta =>
+      const TaskConstMeta(
+        debugName: "WingbirdPatchManager_run",
+        argNames: ["that"],
+      );
 
   @override
   Future<void> crateApiInitApp() {
@@ -221,7 +233,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 3,
+            funcId: 4,
             port: port_,
           );
         },
@@ -239,10 +251,45 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiInitAppConstMeta =>
       const TaskConstMeta(debugName: "init_app", argNames: []);
 
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_WingbirdPatchManager => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWingbirdPatchManager;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_WingbirdPatchManager => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWingbirdPatchManager;
+
   @protected
   AnyhowException dco_decode_AnyhowException(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return AnyhowException(raw as String);
+  }
+
+  @protected
+  WingbirdPatchManager
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWingbirdPatchManager(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return WingbirdPatchManagerImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  WingbirdPatchManager
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWingbirdPatchManager(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return WingbirdPatchManagerImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  WingbirdPatchManager
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWingbirdPatchManager(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return WingbirdPatchManagerImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -252,15 +299,22 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  bool dco_decode_bool(dynamic raw) {
+  WingbirdPatchManagerConfig
+  dco_decode_box_autoadd_wingbird_patch_manager_config(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return raw as bool;
+    return dco_decode_wingbird_patch_manager_config(raw);
   }
 
   @protected
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as Uint8List;
+  }
+
+  @protected
+  int dco_decode_u_32(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as int;
   }
 
   @protected
@@ -276,10 +330,72 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  BigInt dco_decode_usize(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dcoDecodeU64(raw);
+  }
+
+  @protected
+  WingbirdPatchManagerConfig dco_decode_wingbird_patch_manager_config(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 8)
+      throw Exception('unexpected arr length: expect 8 but see ${arr.length}');
+    return WingbirdPatchManagerConfig(
+      serverUrl: dco_decode_String(arr[0]),
+      appId: dco_decode_String(arr[1]),
+      version: dco_decode_String(arr[2]),
+      channel: dco_decode_String(arr[3]),
+      platform: dco_decode_String(arr[4]),
+      architecture: dco_decode_String(arr[5]),
+      rootPath: dco_decode_String(arr[6]),
+      nativeLibDir: dco_decode_String(arr[7]),
+    );
+  }
+
+  @protected
   AnyhowException sse_decode_AnyhowException(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_String(deserializer);
     return AnyhowException(inner);
+  }
+
+  @protected
+  WingbirdPatchManager
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWingbirdPatchManager(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return WingbirdPatchManagerImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  WingbirdPatchManager
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWingbirdPatchManager(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return WingbirdPatchManagerImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  WingbirdPatchManager
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWingbirdPatchManager(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return WingbirdPatchManagerImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
   }
 
   @protected
@@ -290,9 +406,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  bool sse_decode_bool(SseDeserializer deserializer) {
+  WingbirdPatchManagerConfig
+  sse_decode_box_autoadd_wingbird_patch_manager_config(
+    SseDeserializer deserializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    return deserializer.buffer.getUint8() != 0;
+    return (sse_decode_wingbird_patch_manager_config(deserializer));
   }
 
   @protected
@@ -300,6 +419,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var len_ = sse_decode_i_32(deserializer);
     return deserializer.buffer.getUint8List(len_);
+  }
+
+  @protected
+  int sse_decode_u_32(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getUint32();
   }
 
   @protected
@@ -314,9 +439,46 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  BigInt sse_decode_usize(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getBigUint64();
+  }
+
+  @protected
+  WingbirdPatchManagerConfig sse_decode_wingbird_patch_manager_config(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_serverUrl = sse_decode_String(deserializer);
+    var var_appId = sse_decode_String(deserializer);
+    var var_version = sse_decode_String(deserializer);
+    var var_channel = sse_decode_String(deserializer);
+    var var_platform = sse_decode_String(deserializer);
+    var var_architecture = sse_decode_String(deserializer);
+    var var_rootPath = sse_decode_String(deserializer);
+    var var_nativeLibDir = sse_decode_String(deserializer);
+    return WingbirdPatchManagerConfig(
+      serverUrl: var_serverUrl,
+      appId: var_appId,
+      version: var_version,
+      channel: var_channel,
+      platform: var_platform,
+      architecture: var_architecture,
+      rootPath: var_rootPath,
+      nativeLibDir: var_nativeLibDir,
+    );
+  }
+
+  @protected
   int sse_decode_i_32(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getInt32();
+  }
+
+  @protected
+  bool sse_decode_bool(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getUint8() != 0;
   }
 
   @protected
@@ -329,15 +491,57 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWingbirdPatchManager(
+    WingbirdPatchManager self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as WingbirdPatchManagerImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWingbirdPatchManager(
+    WingbirdPatchManager self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as WingbirdPatchManagerImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWingbirdPatchManager(
+    WingbirdPatchManager self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as WingbirdPatchManagerImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
   void sse_encode_String(String self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_list_prim_u_8_strict(utf8.encoder.convert(self), serializer);
   }
 
   @protected
-  void sse_encode_bool(bool self, SseSerializer serializer) {
+  void sse_encode_box_autoadd_wingbird_patch_manager_config(
+    WingbirdPatchManagerConfig self,
+    SseSerializer serializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    serializer.buffer.putUint8(self ? 1 : 0);
+    sse_encode_wingbird_patch_manager_config(self, serializer);
   }
 
   @protected
@@ -348,6 +552,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.length, serializer);
     serializer.buffer.putUint8List(self);
+  }
+
+  @protected
+  void sse_encode_u_32(int self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putUint32(self);
   }
 
   @protected
@@ -362,8 +572,71 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_usize(BigInt self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putBigUint64(self);
+  }
+
+  @protected
+  void sse_encode_wingbird_patch_manager_config(
+    WingbirdPatchManagerConfig self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.serverUrl, serializer);
+    sse_encode_String(self.appId, serializer);
+    sse_encode_String(self.version, serializer);
+    sse_encode_String(self.channel, serializer);
+    sse_encode_String(self.platform, serializer);
+    sse_encode_String(self.architecture, serializer);
+    sse_encode_String(self.rootPath, serializer);
+    sse_encode_String(self.nativeLibDir, serializer);
+  }
+
+  @protected
   void sse_encode_i_32(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putInt32(self);
   }
+
+  @protected
+  void sse_encode_bool(bool self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putUint8(self ? 1 : 0);
+  }
+}
+
+@sealed
+class WingbirdPatchManagerImpl extends RustOpaque
+    implements WingbirdPatchManager {
+  // Not to be used by end users
+  WingbirdPatchManagerImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  WingbirdPatchManagerImpl.frbInternalSseDecode(
+    BigInt ptr,
+    int externalSizeOnNative,
+  ) : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount: RustLib
+        .instance
+        .api
+        .rust_arc_increment_strong_count_WingbirdPatchManager,
+    rustArcDecrementStrongCount: RustLib
+        .instance
+        .api
+        .rust_arc_decrement_strong_count_WingbirdPatchManager,
+    rustArcDecrementStrongCountPtr: RustLib
+        .instance
+        .api
+        .rust_arc_decrement_strong_count_WingbirdPatchManagerPtr,
+  );
+
+  Future<int> getCurrentPatchNumber() => RustLib.instance.api
+      .crateApiPatchWingbirdPatchManagerGetCurrentPatchNumber(that: this);
+
+  Future<void> run() =>
+      RustLib.instance.api.crateApiPatchWingbirdPatchManagerRun(that: this);
 }

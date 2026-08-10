@@ -7,31 +7,64 @@ import '../frb_generated.dart';
 
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-/// Returns true if patch is downloaded, false if no patch is available
-Future<bool> downloadPatch({
-  required String serverUrl,
-  required String appId,
-  required String channel,
-  required String currentVersion,
-  required String architecture,
-  required String platform,
-  required String downloadPath,
-}) => RustLib.instance.api.crateApiPatchDownloadPatch(
-  serverUrl: serverUrl,
-  appId: appId,
-  channel: channel,
-  currentVersion: currentVersion,
-  architecture: architecture,
-  platform: platform,
-  downloadPath: downloadPath,
-);
+// These functions are ignored because they are not marked as `pub`: `apply_patch`, `cache_path`, `cleanup_lib_folder`, `cleanup_patch_folder`, `config_path`, `ensure_dirs`, `lib_dir`, `libapp_path`, `native_libapp_path`, `patch_dir`, `patch_path`, `read_cache`, `read_lib_version_from_file`, `read_patch_config`, `recover_from_lib_broken`, `recover_from_patch_broken`, `remove_if_exists`, `root`, `temp_libapp_path`, `temp_patch_path`, `version_path`
 
-Future<void> applyPatch({
-  required String patchFilePath,
-  required String initialVersionFilePath,
-  required String finalVersionFilePath,
-}) => RustLib.instance.api.crateApiPatchApplyPatch(
-  patchFilePath: patchFilePath,
-  initialVersionFilePath: initialVersionFilePath,
-  finalVersionFilePath: finalVersionFilePath,
-);
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<WingbirdPatchManager>>
+abstract class WingbirdPatchManager implements RustOpaqueInterface {
+  Future<int> getCurrentPatchNumber();
+
+  // HINT: Make it `#[frb(sync)]` to let it become the default constructor of Dart class.
+  static Future<WingbirdPatchManager> newInstance({
+    required WingbirdPatchManagerConfig config,
+  }) =>
+      RustLib.instance.api.crateApiPatchWingbirdPatchManagerNew(config: config);
+
+  Future<void> run();
+}
+
+class WingbirdPatchManagerConfig {
+  final String serverUrl;
+  final String appId;
+  final String version;
+  final String channel;
+  final String platform;
+  final String architecture;
+  final String rootPath;
+  final String nativeLibDir;
+
+  const WingbirdPatchManagerConfig({
+    required this.serverUrl,
+    required this.appId,
+    required this.version,
+    required this.channel,
+    required this.platform,
+    required this.architecture,
+    required this.rootPath,
+    required this.nativeLibDir,
+  });
+
+  @override
+  int get hashCode =>
+      serverUrl.hashCode ^
+      appId.hashCode ^
+      version.hashCode ^
+      channel.hashCode ^
+      platform.hashCode ^
+      architecture.hashCode ^
+      rootPath.hashCode ^
+      nativeLibDir.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is WingbirdPatchManagerConfig &&
+          runtimeType == other.runtimeType &&
+          serverUrl == other.serverUrl &&
+          appId == other.appId &&
+          version == other.version &&
+          channel == other.channel &&
+          platform == other.platform &&
+          architecture == other.architecture &&
+          rootPath == other.rootPath &&
+          nativeLibDir == other.nativeLibDir;
+}
