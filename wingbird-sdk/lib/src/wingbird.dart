@@ -1,9 +1,9 @@
 library;
 
 import 'package:path_provider/path_provider.dart';
-import 'package:sdk/src/runtime_info.dart';
-import 'package:sdk/src/rust/api/patch.dart';
-import 'package:sdk/src/rust/frb_generated.dart';
+import 'package:wingbird_sdk/src/runtime_info.dart';
+import 'package:wingbird_sdk/src/rust/api/patch.dart';
+import 'package:wingbird_sdk/src/rust/frb_generated.dart';
 
 enum Channel { prod, stage }
 

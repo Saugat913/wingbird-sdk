@@ -1,92 +1,39 @@
-# sdk
+# wingbird_sdk
 
-A new Flutter FFI plugin project.
+Wingbird hot-fix patching SDK for Flutter apps. Loads an  `libapp.so` patch at runtime without going through the app store.
 
-## Getting Started
-
-This project is a starting point for a Flutter
-[FFI plugin](https://flutter.dev/to/ffi-package),
-a specialized package that includes native code directly invoked with Dart FFI.
-
-## Project structure
-
-This template uses the following structure:
-
-* `src`: Contains the native source code, and a CmakeFile.txt file for building
-  that source code into a dynamic library.
-
-* `lib`: Contains the Dart code that defines the API of the plugin, and which
-  calls into the native code using `dart:ffi`.
-
-* platform folders (`android`, `ios`, `windows`, etc.): Contains the build files
-  for building and bundling the native code library with the platform application.
-
-## Building and bundling native code
-
-The `pubspec.yaml` specifies FFI plugins as follows:
+## Usage
 
 ```yaml
-  plugin:
-    platforms:
-      some_platform:
-        ffiPlugin: true
+dependencies:
+  wingbird_sdk:
+    path: path/to/wingbird-sdk
 ```
 
-This configuration invokes the native build for the various target platforms
-and bundles the binaries in Flutter applications using these FFI plugins.
+```dart
+import 'package:wingbird_sdk/sdk.dart';
 
-This can be combined with dartPluginClass, such as when FFI is used for the
-implementation of one platform in a federated plugin:
-
-```yaml
-  plugin:
-    implements: some_other_plugin
-    platforms:
-      some_platform:
-        dartPluginClass: SomeClass
-        ffiPlugin: true
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Wingbird.init(channel: Channel.prod);
+  runApp(const MyApp());
+}
 ```
 
-A plugin can have both FFI and method channels:
+Config is read from `--dart-define` build flags:
+- `WINGBIRD_SERVER_URL` — server base URL
+- `WINGBIRD_APP_ID` — app id registered on the server
+- `Channel.prod` vs `Channel.stage` is selected in code
 
-```yaml
-  plugin:
-    platforms:
-      some_platform:
-        pluginClass: SomeName
-        ffiPlugin: true
-```
+## How it works
 
-The native build systems that are invoked by FFI (and method channel) plugins are:
+`Wingbird.init` downloads any available patch for the current release, verifies it, and hot-swaps `libapp.so` on the next launch. The native side is generated with `flutter_rust_bridge`; re-run `flutter_rust_bridge_codegen generate` in `rust/` after changing Rust sources.
 
-* For Android: Gradle, which invokes the Android NDK for native builds.
-  * See the documentation in android/build.gradle.
-* For iOS and MacOS: Xcode, via CocoaPods.
-  * See the documentation in ios/sdk.podspec.
-  * See the documentation in macos/sdk.podspec.
-* For Linux and Windows: CMake.
-  * See the documentation in linux/CMakeLists.txt.
-  * See the documentation in windows/CMakeLists.txt.
+## Prebuilt vs local native build
 
-## Binding to native code
+- **Prebuilt** (default): CI builds `libsdk.so` for each architecture and publishes it as a signed prebuilt artifact; the app fetches it automatically. See `.github/workflows/cargokit-precompile.yaml`.
+- **Local**: if no prebuilt artifact matches, `cargokit` falls back to building native code from `rust/` during `flutter build`.
 
-To use the native code, bindings in Dart are needed.
-To avoid writing these by hand, they are generated from the header file
-(`src/sdk.h`) by `package:ffigen`.
-Regenerate the bindings by running `dart run ffigen --config ffigen.yaml`.
+## License
 
-## Invoking native code
-
-Very short-running native functions can be directly invoked from any isolate.
-For example, see `sum` in `lib/sdk.dart`.
-
-Longer-running functions should be invoked on a helper isolate to avoid
-dropping frames in Flutter applications.
-For example, see `sumAsync` in `lib/sdk.dart`.
-
-## Flutter help
-
-For help getting started with Flutter, view our
-[online documentation](https://docs.flutter.dev), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
+Apache License 2.0 — see `LICENSE`.

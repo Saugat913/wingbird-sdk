@@ -1,7 +1,8 @@
-name: sdk
-description: "A new Flutter FFI plugin project."
+name: wingbird_sdk
+description: Wingbird hot-fix patching SDK for Flutter apps.
 version: 0.0.1
-homepage:
+homepage: https://github.com/saugat913/wingbird
+license: Apache-2.0
 
 environment:
   sdk: ^3.13.0-256.0.dev
