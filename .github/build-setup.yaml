@@ -1,0 +1,2 @@
+- name: Set WINGBIRD_SERVER_URL
+  run: echo "WINGBIRD_SERVER_URL=${{ vars.WINGBIRD_SERVER_URL }}" >> "$GITHUB_ENV"

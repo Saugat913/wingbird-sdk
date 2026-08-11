@@ -55,7 +55,6 @@ jobs:
       publishing: ${{ !github.event.pull_request }}
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      WINGBIRD_SERVER_URL: ${{ vars.WINGBIRD_SERVER_URL }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -128,6 +127,8 @@ jobs:
             curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
             echo "$HOME/.cargo/bin" >> $GITHUB_PATH
           fi
+      - name: "Set WINGBIRD_SERVER_URL"
+        run: "echo \"WINGBIRD_SERVER_URL=${{ vars.WINGBIRD_SERVER_URL }}\" >> \"$GITHUB_ENV\""
       - name: Install dist
         run: ${{ matrix.install_dist.run }}
       # Get the dist-manifest
