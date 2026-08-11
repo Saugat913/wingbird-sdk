@@ -1,6 +1,8 @@
 on:
   push:
     branches: [ main ]
+    tags:
+      - '**[0-9]+.[0-9]+.[0-9]+*'
     paths:
       - "wingbird-sdk/rust/**"
   workflow_dispatch:
