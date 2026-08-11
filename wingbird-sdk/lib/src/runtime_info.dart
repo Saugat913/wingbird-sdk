@@ -11,7 +11,12 @@ class RuntimeInfo {
   final String appVersion;
   final String libAppPath;
 
-  RuntimeInfo({required this.architecture, required this.platform, required this.appVersion, required this.libAppPath});
+  RuntimeInfo({
+    required this.architecture,
+    required this.platform,
+    required this.appVersion,
+    required this.libAppPath,
+  });
 }
 
 final MethodChannel _channel = MethodChannel('com.wingbird.sdk/native');
@@ -46,7 +51,12 @@ Future<RuntimeInfo> getRuntimeInfo() async {
       if (architecture.isEmpty) {
         throw StateError('Failed to get device architecture');
       }
-      return RuntimeInfo(architecture: architecture, platform: 'android', appVersion: appVersion, libAppPath: libAppPath);
+      return RuntimeInfo(
+        architecture: architecture,
+        platform: 'android',
+        appVersion: appVersion,
+        libAppPath: libAppPath,
+      );
     default:
       throw StateError('Unsupported platform');
   }

@@ -28,26 +28,37 @@ class Wingbird {
         bool.hasEnvironment("WINGBIRD_APP_ID");
 
     print('[Wingbird SDK] Update check enabled: $enabled');
-    
-    if(!enabled) return;
 
-      const serverUrl = String.fromEnvironment("WINGBIRD_SERVER_URL");
-      const appId = String.fromEnvironment("WINGBIRD_APP_ID");
-      print('[Wingbird SDK] Config - Server: $serverUrl, AppId: $appId, Channel: $channel');
+    if (!enabled) return;
 
-      final runtimeInfo = await getRuntimeInfo();
-      print('[Wingbird SDK] RuntimeInfo - Version: ${runtimeInfo.appVersion}, Platform: ${runtimeInfo.platform}, Arch: ${runtimeInfo.architecture}, LibPath: ${runtimeInfo.libAppPath}');
+    const serverUrl = String.fromEnvironment("WINGBIRD_SERVER_URL");
+    const appId = String.fromEnvironment("WINGBIRD_APP_ID");
+    print(
+      '[Wingbird SDK] Config - Server: $serverUrl, AppId: $appId, Channel: $channel',
+    );
 
-     
-      final supportDir = await getApplicationSupportDirectory();
-      
+    final runtimeInfo = await getRuntimeInfo();
+    print(
+      '[Wingbird SDK] RuntimeInfo - Version: ${runtimeInfo.appVersion}, Platform: ${runtimeInfo.platform}, Arch: ${runtimeInfo.architecture}, LibPath: ${runtimeInfo.libAppPath}',
+    );
 
-      final patchManagerConfig= WingbirdPatchManagerConfig(serverUrl: serverUrl, appId: appId, version:runtimeInfo.appVersion, channel: channel.name, platform: runtimeInfo.platform, architecture: runtimeInfo.architecture, rootPath: supportDir.path, nativeLibDir: supportDir.path);
+    final supportDir = await getApplicationSupportDirectory();
 
-      
-      final patchManager = await WingbirdPatchManager.newInstance(config: patchManagerConfig);
-      final currentPatchNumber = await patchManager.getCurrentPatchNumber();
-      print('[Wingbird SDK] Current patch number: $currentPatchNumber');
-    
-    }
+    final patchManagerConfig = WingbirdPatchManagerConfig(
+      serverUrl: serverUrl,
+      appId: appId,
+      version: runtimeInfo.appVersion,
+      channel: channel.name,
+      platform: runtimeInfo.platform,
+      architecture: runtimeInfo.architecture,
+      rootPath: supportDir.path,
+      nativeLibDir: supportDir.path,
+    );
+
+    final patchManager = await WingbirdPatchManager.newInstance(
+      config: patchManagerConfig,
+    );
+    final currentPatchNumber = await patchManager.getCurrentPatchNumber();
+    print('[Wingbird SDK] Current patch number: $currentPatchNumber');
+  }
 }
