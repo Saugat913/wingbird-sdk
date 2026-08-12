@@ -351,7 +351,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       platform: dco_decode_String(arr[4]),
       architecture: dco_decode_String(arr[5]),
       rootPath: dco_decode_String(arr[6]),
-      nativeLibDir: dco_decode_String(arr[7]),
+      nativeLibappPath: dco_decode_String(arr[7]),
     );
   }
 
@@ -456,7 +456,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_platform = sse_decode_String(deserializer);
     var var_architecture = sse_decode_String(deserializer);
     var var_rootPath = sse_decode_String(deserializer);
-    var var_nativeLibDir = sse_decode_String(deserializer);
+    var var_nativeLibappPath = sse_decode_String(deserializer);
     return WingbirdPatchManagerConfig(
       serverUrl: var_serverUrl,
       appId: var_appId,
@@ -465,7 +465,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       platform: var_platform,
       architecture: var_architecture,
       rootPath: var_rootPath,
-      nativeLibDir: var_nativeLibDir,
+      nativeLibappPath: var_nativeLibappPath,
     );
   }
 
@@ -590,7 +590,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_String(self.platform, serializer);
     sse_encode_String(self.architecture, serializer);
     sse_encode_String(self.rootPath, serializer);
-    sse_encode_String(self.nativeLibDir, serializer);
+    sse_encode_String(self.nativeLibappPath, serializer);
   }
 
   @protected

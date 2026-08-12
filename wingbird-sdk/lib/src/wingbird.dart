@@ -55,7 +55,7 @@ class Wingbird {
       platform: runtimeInfo.platform,
       architecture: runtimeInfo.architecture,
       rootPath: rootPath,
-      nativeLibDir: runtimeInfo.libAppPath,
+      nativeLibappPath: runtimeInfo.libAppPath,
     );
 
     final patchManager = await WingbirdPatchManager.newInstance(

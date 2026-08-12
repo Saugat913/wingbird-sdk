@@ -30,7 +30,7 @@ class WingbirdPatchManagerConfig {
   final String platform;
   final String architecture;
   final String rootPath;
-  final String nativeLibDir;
+  final String nativeLibappPath;
 
   const WingbirdPatchManagerConfig({
     required this.serverUrl,
@@ -40,7 +40,7 @@ class WingbirdPatchManagerConfig {
     required this.platform,
     required this.architecture,
     required this.rootPath,
-    required this.nativeLibDir,
+    required this.nativeLibappPath,
   });
 
   @override
@@ -52,7 +52,7 @@ class WingbirdPatchManagerConfig {
       platform.hashCode ^
       architecture.hashCode ^
       rootPath.hashCode ^
-      nativeLibDir.hashCode;
+      nativeLibappPath.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -66,5 +66,5 @@ class WingbirdPatchManagerConfig {
           platform == other.platform &&
           architecture == other.architecture &&
           rootPath == other.rootPath &&
-          nativeLibDir == other.nativeLibDir;
+          nativeLibappPath == other.nativeLibappPath;
 }

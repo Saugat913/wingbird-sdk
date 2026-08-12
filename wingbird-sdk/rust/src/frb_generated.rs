@@ -315,7 +315,7 @@ impl SseDecode for crate::api::patch::WingbirdPatchManagerConfig {
         let mut var_platform = <String>::sse_decode(deserializer);
         let mut var_architecture = <String>::sse_decode(deserializer);
         let mut var_rootPath = <String>::sse_decode(deserializer);
-        let mut var_nativeLibDir = <String>::sse_decode(deserializer);
+        let mut var_nativeLibappPath = <String>::sse_decode(deserializer);
         return crate::api::patch::WingbirdPatchManagerConfig {
             server_url: var_serverUrl,
             app_id: var_appId,
@@ -324,7 +324,7 @@ impl SseDecode for crate::api::patch::WingbirdPatchManagerConfig {
             platform: var_platform,
             architecture: var_architecture,
             root_path: var_rootPath,
-            native_lib_dir: var_nativeLibDir,
+            native_libapp_path: var_nativeLibappPath,
         };
     }
 }
@@ -418,7 +418,7 @@ impl flutter_rust_bridge::IntoDart for crate::api::patch::WingbirdPatchManagerCo
             self.platform.into_into_dart().into_dart(),
             self.architecture.into_into_dart().into_dart(),
             self.root_path.into_into_dart().into_dart(),
-            self.native_lib_dir.into_into_dart().into_dart(),
+            self.native_libapp_path.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -521,7 +521,7 @@ impl SseEncode for crate::api::patch::WingbirdPatchManagerConfig {
         <String>::sse_encode(self.platform, serializer);
         <String>::sse_encode(self.architecture, serializer);
         <String>::sse_encode(self.root_path, serializer);
-        <String>::sse_encode(self.native_lib_dir, serializer);
+        <String>::sse_encode(self.native_libapp_path, serializer);
     }
 }
 
@@ -559,14 +559,14 @@ mod io {
     flutter_rust_bridge::frb_generated_boilerplate_io!();
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_sdk_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWingbirdPatchManager(
+    pub extern "C" fn frbgen_wingbird_sdk_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWingbirdPatchManager(
         ptr: *const std::ffi::c_void,
     ) {
         MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<WingbirdPatchManager>>::increment_strong_count(ptr as _);
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_sdk_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWingbirdPatchManager(
+    pub extern "C" fn frbgen_wingbird_sdk_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWingbirdPatchManager(
         ptr: *const std::ffi::c_void,
     ) {
         MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<WingbirdPatchManager>>::decrement_strong_count(ptr as _);
