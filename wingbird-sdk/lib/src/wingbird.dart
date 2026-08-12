@@ -1,5 +1,8 @@
 library;
 
+import 'dart:ui';
+
+import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:wingbird_sdk/src/runtime_info.dart';
 import 'package:wingbird_sdk/src/rust/api/patch.dart';
@@ -43,7 +46,7 @@ class Wingbird {
     );
 
     final supportDir = await getApplicationSupportDirectory();
-
+    final rootPath = join(supportDir.path, 'wingbird');
     final patchManagerConfig = WingbirdPatchManagerConfig(
       serverUrl: serverUrl,
       appId: appId,
@@ -51,8 +54,8 @@ class Wingbird {
       channel: channel.name,
       platform: runtimeInfo.platform,
       architecture: runtimeInfo.architecture,
-      rootPath: supportDir.path,
-      nativeLibDir: supportDir.path,
+      rootPath: rootPath,
+      nativeLibDir: runtimeInfo.libAppPath,
     );
 
     final patchManager = await WingbirdPatchManager.newInstance(
@@ -60,5 +63,7 @@ class Wingbird {
     );
     final currentPatchNumber = await patchManager.getCurrentPatchNumber();
     print('[Wingbird SDK] Current patch number: $currentPatchNumber');
+
+    await patchManager.run();
   }
 }

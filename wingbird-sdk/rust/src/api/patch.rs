@@ -21,7 +21,7 @@ pub struct WingbirdPatchManagerConfig {
     pub architecture: String,
 
     pub root_path: String,
-    pub native_lib_dir: String,
+    pub native_libapp_path: String,
 }
 
 #[frb(opaque)]
@@ -79,7 +79,7 @@ impl WingbirdPatchManager {
     }
 
     fn native_libapp_path(&self) -> PathBuf {
-        PathBuf::from(&self.config.native_lib_dir).join("libapp.so")
+        PathBuf::from(&self.config.native_libapp_path)
     }
 
     fn ensure_dirs(&self) -> anyhow::Result<()> {

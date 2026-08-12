@@ -8,13 +8,17 @@ import android.util.Log
 import io.flutter.FlutterInjector
 import io.flutter.embedding.engine.loader.FlutterLoader
 import java.io.File
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 
 class WingbirdInitProvider : ContentProvider() {
   override fun onCreate(): Boolean {
     val ctx = context?.applicationContext ?: return true
-    val patchFile = File(ctx.filesDir, "wingbird/libapp.so")
-    
-    val patchPath = if (patchFile.exists() && patchFile.canRead() && patchFile.length() > 0) {
+    val patchFile = File(ctx.filesDir, "wingbird/lib/libapp.so")
+    val versionFile = File(ctx.filesDir, "wingbird/lib/.version")
+
+    val patchPath = if (isValidPatch(patchFile) && isVersionMatching(ctx, versionFile)) {
       patchFile.absolutePath
     } else {
       null
@@ -34,6 +38,38 @@ class WingbirdInitProvider : ContentProvider() {
     }
     loader.ensureInitializationComplete(ctx, args.toTypedArray())
     return true
+  }
+
+  private fun isValidPatch(file: File): Boolean =
+    file.exists() && file.canRead() && file.length() > 0
+
+  private fun isVersionMatching(ctx: Context, versionFile: File): Boolean {
+    return try {
+      if (!versionFile.exists()) return false
+      val parts = versionFile.readText().trim().split(":")
+      if (parts.size != 2) return false
+      parts[0] == getAppVersion(ctx)
+    } catch (e: Exception) {
+      Log.w("wingbirdProvider", "Failed to read patch version file: ${e.message}")
+      false
+    }
+  }
+
+  private fun getAppVersion(context: Context): String {
+    return try {
+      val packageInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        context.packageManager.getPackageInfo(
+          context.packageName,
+          PackageManager.PackageInfoFlags.of(0)
+        )
+      } else {
+        @Suppress("DEPRECATION")
+        context.packageManager.getPackageInfo(context.packageName, 0)
+      }
+      "${packageInfo.versionName}+${packageInfo.versionCode}"
+    } catch (e: PackageManager.NameNotFoundException) {
+      ""
+    }
   }
 
   override fun query(u: Uri, p: Array<String>?, s: String?, sa: Array<String>?, so: String?): Cursor? = null
