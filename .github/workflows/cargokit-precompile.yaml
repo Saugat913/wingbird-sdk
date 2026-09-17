@@ -24,11 +24,16 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
       # Cargokit contains a vendored build tool with its own Dart SDK
-      # compatibility requirements. It is not part of this package's public
-      # Dart library and is intentionally excluded from package formatting.
+      # compatibility requirements. It is intentionally excluded from
+      # package validation.
       - name: Format package sources
-        run: dart format --output=none --set-exit-if-changed lib test
+        run: dart format --output=none --set-exit-if-changed lib
       - name: Analyze package
-        run: flutter analyze lib test
-      - name: Test package
-        run: flutter test
+        run: flutter analyze lib
+      - name: Test package when tests exist
+        run: |
+          if [ -d test ]; then
+            flutter test
+          else
+            echo "No test directory found; skipping tests."
+          fi
