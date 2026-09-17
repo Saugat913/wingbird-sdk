@@ -1,39 +1,25 @@
+name: Flutter SDK CI
+
 on:
+  pull_request:
   push:
-    branches: [ main ]
-    tags:
-      - '**[0-9]+.[0-9]+.[0-9]+*'
-    paths:
-      - "wingbird-sdk/rust/**"
+    branches: [main]
   workflow_dispatch:
 
-name: Precompile Binaries
-
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  Precompile:
+  check:
+    name: Check Flutter package
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: dart-lang/setup-dart@v1
-      - name: Resolve NDK version
-        id: ndk
-        run: echo "version=$(ls "$ANDROID_HOME/ndk" | sort -V | tail -1)" >> "$GITHUB_OUTPUT"
-      - name: Precompile (Android)
-        run: |
-          dart run build_tool precompile-binaries -v \
-            --manifest-dir=../../rust \
-            --repository=saugat913/wingbird \
-            --target armv7-linux-androideabi \
-            --target aarch64-linux-android \
-            --target i686-linux-android \
-            --target x86_64-linux-android \
-            --android-sdk-location=/usr/local/lib/android/sdk \
-            --android-ndk-version=${{ steps.ndk.outputs.version }} \
-            --android-min-sdk-version=23
-        working-directory: wingbird-sdk/cargokit/build_tool
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PRIVATE_KEY: ${{ secrets.PRECOMPILE_PRIVATE_KEY }}
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: dart format --output=none --set-exit-if-changed .
+      - run: flutter analyze
+      - run: flutter test
