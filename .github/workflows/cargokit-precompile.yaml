@@ -14,12 +14,21 @@ jobs:
     name: Check Flutter package
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
         with:
           channel: stable
           cache: true
-      - run: flutter pub get
-      - run: dart format --output=none --set-exit-if-changed .
-      - run: flutter analyze
-      - run: flutter test
+      - name: Install dependencies
+        run: flutter pub get
+      # Cargokit contains a vendored build tool with its own Dart SDK
+      # compatibility requirements. It is not part of this package's public
+      # Dart library and is intentionally excluded from package formatting.
+      - name: Format package sources
+        run: dart format --output=none --set-exit-if-changed lib test
+      - name: Analyze package
+        run: flutter analyze lib test
+      - name: Test package
+        run: flutter test
