@@ -33,7 +33,7 @@ jobs:
             --android-sdk-location=/usr/local/lib/android/sdk \
             --android-ndk-version=${{ steps.ndk.outputs.version }} \
             --android-min-sdk-version=23
-        working-directory: wingbird-sdk/cargokit/build_tool
+        working-directory: cargokit/build_tool
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PRIVATE_KEY: ${{ secrets.PRECOMPILE_PRIVATE_KEY }}
